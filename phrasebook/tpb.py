@@ -15,59 +15,66 @@ def isChinese(s):
         return True
 
 
+def sqlite_query(sqlcmd, params=None, db_path=''):
+    with sqlite3.connect(db_path) as conn:
+        cursor = conn.cursor()
+        cursor.execute(sqlcmd, params)
+        for row in cursor:
+            yield row
+
+
+def gen_condition(query, operator):
+    conditions = []
+    params = (query.strip(), )
+    if "," in query:
+        ch, en = [item.strip() for item in query.split(',', 1)]
+        conditions.append("cphrasekey {} ?".format(operator))
+        conditions.append("ephrase {} ?".format(operator))
+        params = (ch, en)
+    else:
+        if isChinese(query.replace("%", "")):
+            conditions.append("cphrasekey {} ?".format(operator))
+        else:
+            conditions.append("ephrase {} ?".format(operator))
+    return ' and '.join(conditions), params
+
+
+def get_phrase(query, offset=0):
+    operator = 'like' if "%" in query else '='
+    condition, params = gen_condition(query, operator)
+    sqlcmd = "select * from phrase_table where {} order by min(pec, pce) desc limit 8 offset {};".format(condition, offset)
+    result = [row for row in sqlite_query(sqlcmd, params, "phrase_table.db")]
+    return result
+
+
+def get_sentence(ch, en):
+    sqlcmd = "select * from alignment where ' ' || chsent || ' ' like '% ' || ? || ' %' and ' ' || ensent || ' ' like '% ' || ? || ' %' limit 8;"
+    result = [row for row in sqlite_query(sqlcmd,  (ch, en), "hkpt.alg.db")]
+    return result
+
+
 @app.route("/phrase", methods=['GET'])
-def get_phrase():
+def get_phrase_():
     q = request.args.get("q")
-    offset = request.args.get("offset")
+    offset = request.args.get("offset", 0)
     q = q.replace("*", "%")
 
     if not q:
         return Response('', mimetype="text/plain", status=404)
 
-    opr = "like" if "%" else "="
-
-    con = sqlite3.connect("phrase_table.db")
-    cur = con.cursor()
-
-    if "," in q:
-        ch, en = [item.strip() for item in q.split(',', 1)]
-        sql = "select * from phrase_table where cphrasekey %s ? and ephrase %s ? order by min(pec, pce) desc limit 8 offset %s;" % (
-            opr, opr, offset)
-        cur.execute(sql, [ch, en])
-
-    else:
-        if isChinese(q.replace("%", "")):
-            ch = q.replace(" ", "")
-            sql = "select * from phrase_table where cphrasekey %s ? order by min(pec, pce) desc limit 8 offset %s;" % (
-                opr, offset)
-            cur.execute(sql, [ch])
-        else:
-            en = q
-            sql = "select * from phrase_table where ephrase %s ? order by min(pec, pce) desc limit 8 offset %s;" % (
-                opr, offset)
-            cur.execute(sql, [en])
-
-    result = []
-    for row in cur:
-        result.append(row)
+    result = get_phrase(q, offset)
     return jsonify(result)
 
 
 @app.route("/sentence", methods=['GET'])
-def get_sentence():
+def get_sentence_():
     ch = request.args.get("ch")
     en = request.args.get("en")
 
     if ch is None and en is None:
         return Response('', mimetype="text/plain", status=404)
 
-    con = sqlite3.connect("hkpt.alg.db")
-    cur = con.cursor()
-    sql = "select * from alignment where ' ' || chsent || ' ' like '% ' || ? || ' %' and ' ' || ensent || ' ' like '% ' || ? || ' %' limit 8;"
-    cur.execute(sql, (ch, en))
-    result = []
-    for row in cur:
-        result.append(row)
+    result = get_sentence(ch, en)
     return jsonify(result)
 
 
