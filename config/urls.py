@@ -16,11 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 
-from phrasebook.views import get_phrase, get_sentence, index
+from phrasebook.views import phrase_view, sentence_view, index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    re_path(r'^phrase/(?P<query>.+)/$', get_phrase, name='phrase'),
-    path('sentence', get_sentence, name='sentence'),
+    re_path(r'^phrase/(?P<phrase>.+)$', phrase_view, name='phrase'),
+    path('sentence', sentence_view, name='sentence'),
     re_path(r'^$', index, name='index'),
 ]
