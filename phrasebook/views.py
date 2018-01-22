@@ -4,16 +4,16 @@ from phrasebook.tpb import get_phrase, get_sentence
 
 
 # Create your views here.
-def phrase_view(request, query):
+def phrase_view(request, phrase):
     if request.method == 'GET':
         offset = request.GET.get('offset', 0)
-        query = query.replace("*", "%")
+        phrase = phrase.replace("*", "%")
 
-        if not query:
+        if not phrase:
             return HttpResponse(status=404)
 
-        result = get_phrase(query, offset)
-        return JsonResponse(result)
+        result = get_phrase(phrase, offset)
+        return JsonResponse(result, safe=False)
     else:
         return HttpResponse(status=404)
 
@@ -27,7 +27,7 @@ def sentence_view(request):
             return HttpResponse(status=404)
 
         result = get_sentence(ch, en)
-        return JsonResponse(result)
+        return JsonResponse(result, safe=False)
     else:
         return HttpResponse(status=404)
 
