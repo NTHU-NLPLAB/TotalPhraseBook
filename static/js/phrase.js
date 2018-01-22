@@ -201,7 +201,7 @@ function queryPhrase(offset)
 {
 	if(offset === undefined)
 		offset = 0;
-	var sUrl = "phrase?q=" + Url.encode($("q").value) + "&offset=" + offset;
+	var sUrl = "phrase/" + Url.encode($("q").value) + "?offset=" + offset;
 	var callback =
 	{
 		success:qp_responseSuccess,
