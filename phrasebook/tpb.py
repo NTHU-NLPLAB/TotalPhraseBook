@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, Response, jsonify, request, render_template
 import re
+import os
 import sqlite3
+
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(__name__)
 
@@ -40,16 +43,18 @@ def gen_condition(query, operator):
 
 
 def get_phrase(query, offset=0):
+    db_path = os.path.join(PROJECT_DIR, 'phrase_table.db')
     operator = 'like' if "%" in query else '='
     condition, params = gen_condition(query, operator)
     sqlcmd = "select * from phrase_table where {} order by min(pec, pce) desc limit 8 offset {};".format(condition, offset)
-    result = [row for row in sqlite_query(sqlcmd, params, "phrase_table.db")]
+    result = [row for row in sqlite_query(sqlcmd, params, db_path)]
     return result
 
 
 def get_sentence(ch, en):
+    db_path = os.path.join(PROJECT_DIR, 'hkpt.alg.db')
     sqlcmd = "select * from alignment where ' ' || chsent || ' ' like '% ' || ? || ' %' and ' ' || ensent || ' ' like '% ' || ? || ' %' limit 8;"
-    result = [row for row in sqlite_query(sqlcmd,  (ch, en), "hkpt.alg.db")]
+    result = [row for row in sqlite_query(sqlcmd,  (ch, en), db_path)]
     return result
 
 
