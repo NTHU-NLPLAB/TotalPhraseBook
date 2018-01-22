@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>TotalPhraseBook</title>
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/event/event-min.js"></script>
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/connection/connection-min.js"></script>
+	<script type="text/javascript" src="static/js/webtoolkit.url.js"></script>
+	<script type="text/javascript" src="static/js/phrase.js"></script>
+	<link rel="stylesheet" type="text/css" href="static/css/style.css">
+</head>
+<body onload="init();">
+	<div id="header">
+		<div id="header-inner">
+			<a href="./" title="TotalPhraseBook"><h1 id="logo">TotalPhraseBook</h1></a>
+			<form id="search" onsubmit="return queryPhrase();">
+				<div>
+					<input id="q" type="text" value="打擊" />
+					<input id="go" type="image" alt="Go" src="static/img/go.png" />
+				</div>
+			</form>			
+		</div>
+	</div>
+	
+	<div id="nav">
+		<div id="itm-phrase" class="item">
+			Phrase
+		</div>
+		<div id="itm-sentence" class="item">
+			Sentence
+		</div>
+	</div>
+
+	<div id="panel-phrase">
+		<div id="panel-phrase-no-result">
+			<img src="static/img/oops.png" width="150px" /><br />
+			Oops!<br />
+			We can't find any result to your query.
+		</div>
+		<ul id="ul-phrase">
+<!--			<li>
+				<div class="info">(0.051, 0.207, Infinity)</div>
+				<div class="cphrase">測試 a</div>
+				<div class="ephrase">test a</div>
+
+			</li>
+			<li class="selected">
+				<div class="info">(0.051, 0.207, Infinity)</div>
+				<div class="cphrase">測試 b</div>
+				<div class="ephrase">test b</div>
+			</li>
+			<li>
+				<div class="info">(0.051, 0.207, Infinity)</div>
+				<div class="cphrase">測試 a</div>
+				<div class="ephrase">test a</div>
+			</li>
+			<li>
+				<div class="info">(0.051, 0.207, Infinity)</div>
+				<div class="cphrase">測試 b</div>
+				<div class="ephrase">test b</div>
+			</li>
+			<li>
+				<div class="info">(0.051, 0.207, Infinity)</div>
+				<div class="cphrase">測試 a</div>
+				<div class="ephrase">test a</div>
+			</li>
+			<li>
+				<div class="info">(0.051, 0.207, Infinity)</div>
+				<div class="cphrase">測試 b</div>
+				<div class="ephrase">test b</div>
+			</li>
+			<li>
+				<div class="info">(0.051, 0.207, Infinity)</div>
+				<div class="cphrase">測試 a</div>
+				<div class="ephrase">test a</div>
+			</li>
+			<li>
+				<div class="info">(0.051, 0.207, Infinity)</div>
+				<div class="cphrase">測試 b</div>
+				<div class="ephrase">test b</div>
+			</li>
+			<li>
+				<div class="info">(0.051, 0.207, Infinity)</div>
+				<div class="cphrase">測試 a</div>
+				<div class="ephrase">test a</div>
+			</li>
+			<li>
+				<div class="info">(0.051, 0.207, Infinity)</div>
+				<div class="cphrase">測試 b</div>
+				<div class="ephrase">test b</div>
+			</li>-->
+		</ul>
+	</div>
+	<div id="panel-info">
+<!--		<ul>
+			<li>cealign: (0) (1) ()</li>
+			<li>ecalign: (0) (1)</li>
+			<li>Count(c,e): 100</li>
+			<li>Count(c): 200</li>
+			<li>Count(e): 250</li>
+		</ul>-->
+	</div>
+	<div id="panel-tip">
+		<img id="img-tip" src="static/img/arrow-up.png" />
+		To start, type in an English or Chinese phrase and check out the translations and example sentences.
+	</div>
+	
+	<div id="panel-sentence">
+<!--		<ul>
+			<li>
+				<div class="csentence">衛生福利司答（傳譯）：我想這是另外一方面問題了，但我會設法找出答案，以書面答覆林議員。</div>
+				<div class="esentence">secretaryforhealthandwelfare:ithinkthisisratheranotherquestionbutiwilltryandfindouttheanswerandwritetodr.lam.</div>
+			</li>
+			<li>
+				<div class="csentence">衛生福利司答（傳譯）：我想這是另外一方面問題了，但我會設法找出答案，以書面答覆林議員。</div>
+				<div class="esentence">secretaryforhealthandwelfare:ithinkthisisratheranotherquestionbutiwilltryandfindouttheanswerandwritetodr.lam.</div>
+			</li>
+			<li>
+				<div class="csentence">衛生福利司答（傳譯）：我想這是另外一方面問題了，但我會設法找出答案，以書面答覆林議員。</div>
+				<div class="esentence">secretaryforhealthandwelfare:ithinkthisisratheranotherquestionbutiwilltryandfindouttheanswerandwritetodr.lam.</div>
+			</li>
+			<li>
+				<div class="csentence">衛生福利司答（傳譯）：我想這是另外一方面問題了，但我會設法找出答案，以書面答覆林議員。</div>
+				<div class="esentence">secretaryforhealthandwelfare:ithinkthisisratheranotherquestionbutiwilltryandfindouttheanswerandwritetodr.lam.</div>
+			</li>
+			<li>
+				<div class="csentence">衛生福利司答（傳譯）：我想這是另外一方面問題了，但我會設法找出答案，以書面答覆林議員。</div>
+				<div class="esentence">secretaryforhealthandwelfare:ithinkthisisratheranotherquestionbutiwilltryandfindouttheanswerandwritetodr.lam.</div>
+			</li>
+			<li>
+				<div class="csentence">衛生福利司答（傳譯）：我想這是另外一方面問題了，但我會設法找出答案，以書面答覆林議員。</div>
+				<div class="esentence">secretaryforhealthandwelfare:ithinkthisisratheranotherquestionbutiwilltryandfindouttheanswerandwritetodr.lam.</div>
+			</li>
+		</ul>-->
+	</div>
+	
+	<div id="copyright">
+		&copy;2009 Natural Language Processing Lab, National Tsing Hua University<br />
+		Written by <a href="mailto:zi@infor.org">zi</a><br />
+	</div>
+
+<!-- Begin Google Analytics -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." :
+"http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost +
+"google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-8343696-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+<!-- End Google Analytics -->
+</body>
+</html>
