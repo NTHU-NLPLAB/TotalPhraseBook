@@ -1,23 +1,22 @@
+{% load static %}
 <!DOCTYPE HTML>
 <html>
 <head>
 	<meta charset="utf-8">
 	<title>TotalPhraseBook</title>
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/yahoo/yahoo-min.js"></script>
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/event/event-min.js"></script>
-	<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/connection/connection-min.js"></script>
-	<script type="text/javascript" src="static/js/webtoolkit.url.js"></script>
-	<script type="text/javascript" src="static/js/phrase.js"></script>
-	<link rel="stylesheet" type="text/css" href="static/css/style.css">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 <body onload="init();">
+
 	<div id="header">
 		<div id="header-inner">
-			<a href="./" title="TotalPhraseBook"><h1 id="logo">TotalPhraseBook</h1></a>
+			<a href="./" title="TotalPhraseBook">
+				<h1 id="logo">TotalPhraseBook</h1>
+			</a>
 			<form id="search" onsubmit="return queryPhrase();">
 				<div>
 					<input id="q" type="text" value="打擊" />
-					<input id="go" type="image" alt="Go" src="static/img/go.png" />
+					<input id="go" type="image" alt="Go" src="{% static 'img/go.png' %}" />
 				</div>
 			</form>			
 		</div>
@@ -34,7 +33,7 @@
 
 	<div id="panel-phrase">
 		<div id="panel-phrase-no-result">
-			<img src="static/img/oops.png" width="150px" /><br />
+			<img src="{% static 'img/oops.png' %}" width="150px" /><br />
 			Oops!<br />
 			We can't find any result to your query.
 		</div>
@@ -43,7 +42,7 @@
 	</div>
 	<div id="panel-info"></div>
 	<div id="panel-tip">
-		<img id="img-tip" src="static/img/arrow-up.png" />
+		<img id="img-tip" src="{% static 'img/arrow-up.png' %}" />
 		To start, type in an English or Chinese phrase and check out the translations and example sentences.
 	</div>
 	
@@ -55,19 +54,10 @@
 		Written by <a href="mailto:zi@infor.org">zi</a><br />
 	</div>
 
-<!-- Begin Google Analytics -->
-<script type="text/javascript">
-var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl.":"http://www.");
-document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-</script>
-<script type="text/javascript">
-try {
-  var pageTracker = _gat._getTracker("UA-8343696-1");
-  pageTracker._trackPageview();
-} catch(err) {
-
-}
-</script>
-<!-- End Google Analytics -->
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/yahoo/yahoo-min.js"></script>
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/event/event-min.js"></script>
+	<script type="text/javascript" src="http://yui.yahooapis.com/2.7.0/build/connection/connection-min.js"></script>
+	<script type="text/javascript" src="{% static 'js/webtoolkit.url.js' %}"></script>
+	<script type="text/javascript" src="{% static 'js/phrase.js' %}"></script>
 </body>
 </html>
